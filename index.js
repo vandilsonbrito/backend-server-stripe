@@ -6,7 +6,9 @@ import router from './stripe.js';
 const stripe = router;
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: ['https://delicias-da-casa.netlify.app', 'http://localhost:5173'] // Adicione aqui os domínios permitidos
+}));
 const port = process.env.PORT || 3001; 
 
 // Middleware to parse JSON and set up
