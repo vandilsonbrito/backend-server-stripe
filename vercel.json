@@ -8,7 +8,7 @@
     ],
     "routes": [
       {
-        "src": "https://delicias-da-casa.netlify.app/(.*)",
+        "src": "stripe/(.*)",
         "methods": ["GET", "OPTIONS", "PATCH", "DELETE", "POST", "PUT"],
         "headers": {
           "Access-Control-Allow-Credentials": "true",
