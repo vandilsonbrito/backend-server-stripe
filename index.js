@@ -12,6 +12,7 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization');
   if (req.method === 'OPTIONS') {
+    console.log('Status code before setting to 200:', res.statusCode);
     res.status(200).send(http.StatusOK);
   } else {
     next();
