@@ -18,8 +18,6 @@ app.use((req, res, next) => {
   }
 });
 
-
-
 const port =  3000; 
 
 // Middleware to parse JSON and set up
@@ -30,7 +28,7 @@ app.use("/CartCheckout/stripe", stripe)
 app.use(json());
 
 app.get('/', (req, res) => {
-  res.send('Servidor do backend está funcionando!');
+  res.send('Server is running!');
 });
 
 app.post('/create-checkout-session', async (req, res) => {
@@ -44,12 +42,12 @@ app.post('/create-checkout-session', async (req, res) => {
 
     res.status(200).json({ clientSecret: paymentIntent.client_secret });
   } catch (error) {
-    console.error('Erro ao criar o pagamento:', error);
-    res.status(500).send({ error: 'Erro ao criar o pagamento' });
+    console.error('Error creating Payment Intent: ', error);
+    res.status(500).send({ error: 'Error creating Payment' });
   }
 });
 
 app.listen(port, () => {
-  console.log(`Servidor do backend está rodando em http://localhost:${port}`);
+  console.log(`Server running on http://localhost:${port}`);
 });
 
