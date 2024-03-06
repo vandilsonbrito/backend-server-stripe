@@ -14,7 +14,7 @@ app.use((req, res, next) => {
   next();
 });
 
-const port = 3001; 
+const port =  443; 
 
 // Middleware to parse JSON and set up
 app.use(express.json()); 
