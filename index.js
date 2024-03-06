@@ -1,21 +1,22 @@
 import express from 'express';
 import { json } from 'express';
-import cors from 'cors';
+/* import cors from 'cors'; */
 
 import router from './stripe.js';
 const stripe = router;
 
 const app = express();
-app.use(cors());
+/* app.use(cors()); */
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization');
   if (req.method === 'OPTIONS') {
-    res.WriteHeader(200, http.StatusOK)
+    res.status(200).send(http.StatusOK);
   } else {
     next();
   }
+  
 });
 
 const port =  3000; 
