@@ -31,7 +31,7 @@ router.post('/create-checkout-session', async (req, res) => {
         // eslint-disable-next-line no-undef
         success_url: `${process.env.URL}/checkout-success`,
         // eslint-disable-next-line no-undef
-        cancel_url: `${process.env.URL}/CartCheckout`,
+        cancel_url: `${process.env.URL}`,
     });
 
     res.send({ url: session.url });
