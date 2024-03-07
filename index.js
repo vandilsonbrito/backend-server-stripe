@@ -64,10 +64,9 @@ function MyApi(req, res) {
 
 // Inicialize o micro-cors
 const cors = microCors();
-export default cors(MyApi);
 
 // Use o micro-cors como middleware para todas as rotas
-app.use(cors);
+app.use(cors(MyApi));
 
 // Defina suas rotas
 app.use("/CartCheckout/stripe", stripe);
