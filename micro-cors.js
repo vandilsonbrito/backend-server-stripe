@@ -1,16 +1,12 @@
-import { send } from ('micro')
-import cors from ('micro-cors')()
+import micro from "micro-cors";
 
-const handler = (req, res) => {
-  if (req.method === 'OPTIONS') {
-    return send(res, 200, 'ok!');
+function MyApi(req, res) {
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
   }
-
-  if (req.method !== 'POST') {
-    throw createError(404, 'Not Found');
-  }
-
-  // handle incoming request as usual
+  // handling other requests normally after this
 }
 
-module.exports = cors(handler)
+const cors = micro();
+
+export default cors(MyApi);
