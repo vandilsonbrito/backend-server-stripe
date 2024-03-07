@@ -1,6 +1,6 @@
 import express from 'express';
 import { json } from 'express';
-
+import cors from 'cors';
 
 import router from './stripe.js';
 const stripe = router;
@@ -12,6 +12,7 @@ const port =  3000;
 // Middleware to parse JSON and set up
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true })); 
+app.use(cors());
 
 app.use("/CartCheckout/stripe", stripe)
 app.use(json());
