@@ -1,6 +1,6 @@
 import express from 'express';
 import { json } from 'express';
-
+import microCors from 'micro-cors';
 
 import router from './stripe.js';
 const stripe = router;
@@ -15,6 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/CartCheckout/stripe", stripe)
 app.use(json());
+
+microCors(app);
 
 app.get('/', (req, res) => {
   res.send('Server is running!');
