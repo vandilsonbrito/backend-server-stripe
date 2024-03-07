@@ -38,7 +38,7 @@ app.post('/create-checkout-session', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
 
