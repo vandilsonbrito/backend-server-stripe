@@ -29,9 +29,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/CartCheckout/stripe", stripe)
 app.use(json());
 
-app.get('/', (req, res) => {
+/* app.get('/', (req, res) => {
   res.send('Server is running!');
-});
+}); */
 
 app.post('/create-checkout-session', async (req, res) => {
   const { amount, currency } = req.body;
