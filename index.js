@@ -43,7 +43,7 @@ app.listen(port, () => {
  */
 
 import express from 'express';
-import microCors from 'micro-cors';
+import micro from "micro-cors";
 import router from './stripe.js';
 
 const stripe = router;
@@ -63,7 +63,7 @@ function MyApi(req, res) {
 }
 
 // Inicialize o micro-cors
-const cors = microCors();
+const cors = micro();
 
 // Use o micro-cors como middleware para todas as rotas
 app.use(cors(MyApi));
