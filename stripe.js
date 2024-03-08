@@ -27,6 +27,28 @@ router.post('/create-checkout-session', async (req, res) => {
 
     const session = await stripe.checkout.sessions.create({
         line_items: lineItems,
+        phone_number_collection: {
+            enabled: true
+        }, 
+        shipping_address_collection: {
+            allowed_countries: ['BR']
+        }, 
+        shipping_options: [{
+            shipping_rate_data: {
+                display_name: 'Taxa de entrega',
+                delivery_estimate: {
+                    maximum: {
+                        unit: 'hour',
+                        value: 1
+                    }
+                },  
+                type: 'fixed_amount',
+                fixed_amount: {
+                    amount: 500,
+                    currency: 'BRL'
+                }
+            }
+        }],
         mode: 'payment',
         // eslint-disable-next-line no-undef
         success_url: `${process.env.URL}/checkout-success`,
