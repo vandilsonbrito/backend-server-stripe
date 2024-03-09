@@ -17,6 +17,7 @@ router.post('/create-checkout-session', async (req, res) => {
             currency: 'brl',
             product_data: {
                 name: item.productName,
+                images: [item.image],
             },
             unit_amount: parseInt(item.price * 100),
         },
@@ -35,7 +36,7 @@ router.post('/create-checkout-session', async (req, res) => {
         }, 
         shipping_options: [{
             shipping_rate_data: {
-                display_name: 'Taxa de entrega',
+                display_name: 'Tempo de entrega',
                 delivery_estimate: {
                     maximum: {
                         unit: 'hour',
