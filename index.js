@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 });
 
 // Route to inform server that any request from '/CartCheckout/stripe' route will be processed by the middleware in /stripe.js
-app.use("/CartCheckout/stripe", stripe);
+app.use("/cart-checkout/stripe", stripe);
 
 
 // Route to create a checkout session
