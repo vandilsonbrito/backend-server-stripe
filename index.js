@@ -6,23 +6,23 @@ import router from './stripe.js';
 const stripe = router;
 
 const app = express();
-
 const port =  3000; 
 
-// Middleware to parse JSON and set up
-app.use(express.json()); 
+
 app.use(express.urlencoded({ extended: true })); 
 app.use(cors());
 
-app.use("/CartCheckout/stripe", stripe)
-app.use(json());
-
-
+// Route obly to inform server is running
 app.get('/', (req, res) => {
   res.send('Server is running!');
 });
 
-app.post('/create-checkout-session', async (req, res) => {
+// Route to inform server that any request from '/CartCheckout/stripe' route will be processed by the middleware in /stripe.js
+app.use("/CartCheckout/stripe", stripe);
+
+
+// Route to create a checkout session
+app.post('/create-checkout-session', express.json(), async (req, res) => {
   const { amount, currency } = req.body;
 
   try {
@@ -37,6 +37,10 @@ app.post('/create-checkout-session', async (req, res) => {
     res.status(500).send({ error: 'Error creating Payment' });
   }
 });
+
+// Route to pass webhook data to frontend
+app.post('/checkout-success', express.json(), stripe);
+
 
 app.listen(process.env.PORT || port, () => {
   console.log(`Server running on http://localhost:${port}`);
