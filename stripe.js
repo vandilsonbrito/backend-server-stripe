@@ -106,7 +106,7 @@ if(eventType === "checkout.session.completed") {
 
             // Send data to frontend
             const dataFromWebhook = [{
-                customerId: customer.id,
+                customerId: customer.id,    
                 cart: JSON.parse(customer.metadata.cart),
                 amount_subtotal: data.amount_subtotal,
                 amount_total: data.amount_total,
@@ -114,7 +114,7 @@ if(eventType === "checkout.session.completed") {
                 customer_details: data.customer_details
             }];
             
-            router.post("/checkout-success" , (req, res) => {
+            router.post("/" , (req, res) => {
                 res.status(200).json(dataFromWebhook);
             })
             
