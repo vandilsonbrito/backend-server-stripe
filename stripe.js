@@ -13,6 +13,8 @@ const router = express.Router();
 router.post('/create-checkout-session', express.json(), async (req, res) => {
     const { cartItems } = req.body;
 
+    console.log(cartItems)  
+
     const customer = await stripe.customers.create({
         metadata: {
             cart: JSON.stringify(cartItems.map(item => ({
@@ -62,6 +64,7 @@ router.post('/create-checkout-session', express.json(), async (req, res) => {
         customer: customer.id,
         mode: 'payment',
         // eslint-disable-next-line no-undef
+        //process.env.URL
         success_url: `${process.env.URL}/checkout-success`,
         // eslint-disable-next-line no-undef
         cancel_url: `${process.env.URL}`,
@@ -111,7 +114,7 @@ if(eventType === "checkout.session.completed") {
                 customer_details: data.customer_details
             }];
             
-            router.post(`/checkout-successs`, (req, res) => {
+            router.post("/checkout-success" , (req, res) => {
                 res.status(200).json(dataFromWebhook);
             })
             
