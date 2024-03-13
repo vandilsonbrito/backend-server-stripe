@@ -12,13 +12,16 @@ const router = express.Router();
 // Create checkout session with the required parameters
 router.post('/create-checkout-session', express.json(), async (req, res) => {
     const { cartItems } = req.body;
-    console.log(cartItems)
 
     const customer = await stripe.customers.create({
         metadata: {
-            cart: JSON.stringify(cartItems)
+            cart: JSON.stringify(cartItems.map(item => ({
+                id: item.id,
+                quantity: item.quantity
+            })))
         }
     })
+    console.log(customer.metadata.cart)
 
     const lineItems = cartItems.map((item) => ({
         price_data: {
@@ -94,10 +97,12 @@ router.post('/webhook', express.raw({type: 'application/json'}), (request, respo
 
   // Handle the event
   if(eventType === "checkout.session.completed") {
-    stripe.customers.retrieve(data.customer).then((customer) => {
-            
+    stripe.customers.retrieve(data.customer)
+        .then((customer) => {
+
             // Send data to frontend
             const dataFromWebhook = [{
+                customerId: customer.id,
                 cart: JSON.parse(customer.metadata.cart),
                 amount_subtotal: data.amount_subtotal,
                 amount_total: data.amount_total,
