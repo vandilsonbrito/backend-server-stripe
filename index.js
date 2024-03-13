@@ -39,7 +39,7 @@ app.post('/create-checkout-session', express.json(), async (req, res) => {
 });
 
 // Route to pass webhook data to frontend
-app.post('/checkout-success', express.json(), stripe);
+app.post('/checkout-successs', express.json(), stripe);
 
 
 app.listen(process.env.PORT || port, () => {

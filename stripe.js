@@ -21,7 +21,7 @@ router.post('/create-checkout-session', express.json(), async (req, res) => {
             })))
         }
     })
-    console.log(customer.metadata.cart)
+    
 
     const lineItems = cartItems.map((item) => ({
         price_data: {
@@ -93,12 +93,13 @@ router.post('/webhook', express.raw({type: 'application/json'}), (request, respo
 
     data = event.data.object;
     eventType = event.type;
-  }
+}
 
   // Handle the event
-  if(eventType === "checkout.session.completed") {
+if(eventType === "checkout.session.completed") {
     stripe.customers.retrieve(data.customer)
         .then((customer) => {
+            console.log(customer.metadata.cart)
 
             // Send data to frontend
             const dataFromWebhook = [{
@@ -109,14 +110,14 @@ router.post('/webhook', express.raw({type: 'application/json'}), (request, respo
                 total_details: data.total_details,
                 customer_details: data.customer_details
             }];
-          
-            router.post(`/checkout-success`, (req, res) => {
+            
+            router.post(`/checkout-successs`, (req, res) => {
                 res.status(200).json(dataFromWebhook);
             })
-           
+            
         }
     ).catch(err => console.log(err.message));
-  }
+}
 
   // Return a 200 response to acknowledge receipt of the event
   response.send().end();
