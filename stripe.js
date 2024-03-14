@@ -82,6 +82,7 @@ router.post('/create-checkout-session', express.json(), async (req, res) => {
 // 
 //const endpointSecret = `${process.env.SECRET_SIGNATURE}`;
 const endpointSecret = process.env.SECRET_SIGNATURE;
+console.log('Entrando em Webhook!');
 
 //const endpointSecret = "whsec_dd0f50c30b5c9d454e830e3494f80078c5a434af1e017f49e54ce5fc4214591f";
 router.post('/webhook', express.raw({type: 'application/json'}), (request, response) => {
