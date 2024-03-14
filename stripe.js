@@ -114,7 +114,7 @@ if(eventType === "checkout.session.completed") {
                 customer_details: data.customer_details
             }];
             
-            router.post("/" , (req, res) => {
+            router.post("/checkout-success" , (req, res) => {
                 res.status(200).json(dataFromWebhook);
             })
             
