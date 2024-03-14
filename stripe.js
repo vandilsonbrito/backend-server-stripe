@@ -80,13 +80,15 @@ router.post('/create-checkout-session', express.json(), async (req, res) => {
 // This is your Stripe CLI webhook secret for testing your endpoint locally
 // whsec_dd0f50c30b5c9d454e830e3494f80078c5a434af1e017f49e54ce5fc4214591f
 // 
+//const endpointSecret = `${process.env.SECRET_SIGNATURE}`;
 const endpointSecret = process.env.SECRET_SIGNATURE;
+
 //const endpointSecret = "whsec_dd0f50c30b5c9d454e830e3494f80078c5a434af1e017f49e54ce5fc4214591f";
 router.post('/webhook', express.raw({type: 'application/json'}), (request, response) => {
   const sig = request.headers['stripe-signature'];
 
   let event, data, eventType;
-
+    console.log('Passou por Webhook!');
   if(endpointSecret) {
     try {
         event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
