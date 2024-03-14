@@ -6,6 +6,7 @@ configDotenv();
 // eslint-disable-next-line no-undef
 const STRIPE_API_KEY = process.env.STRIPE_API_KEY;
 const stripe = Stripe(STRIPE_API_KEY);
+const url = process.env.URL;
 
 const router = express.Router();
 
@@ -65,9 +66,9 @@ router.post('/create-checkout-session', express.json(), async (req, res) => {
         mode: 'payment',
         // eslint-disable-next-line no-undef
         //process.env.URL
-        success_url: `${process.env.URL}/checkout-success`,
+        success_url: `${url}/checkout-success`,
         // eslint-disable-next-line no-undef
-        cancel_url: `${process.env.URL}`,
+        cancel_url: `${url}`,
     });
 
     res.send({ url: session.url });
@@ -76,9 +77,11 @@ router.post('/create-checkout-session', express.json(), async (req, res) => {
 
 
 // Stripe webhook
-// This is your Stripe CLI webhook secret for testing your endpoint locally.
-const endpointSecret = "whsec_dd0f50c30b5c9d454e830e3494f80078c5a434af1e017f49e54ce5fc4214591f";
-
+// This is your Stripe CLI webhook secret for testing your endpoint locally
+// whsec_dd0f50c30b5c9d454e830e3494f80078c5a434af1e017f49e54ce5fc4214591f
+// 
+const endpointSecret = process.env.SECRET_SIGNATURE;
+//const endpointSecret = "whsec_dd0f50c30b5c9d454e830e3494f80078c5a434af1e017f49e54ce5fc4214591f";
 router.post('/webhook', express.raw({type: 'application/json'}), (request, response) => {
   const sig = request.headers['stripe-signature'];
 
