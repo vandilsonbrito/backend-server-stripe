@@ -77,16 +77,14 @@ router.post('/create-checkout-session', express.json(), async (req, res) => {
 
 
 // Stripe webhook
-// This is your Stripe CLI webhook secret for testing your endpoint locally
-// whsec_dd0f50c30b5c9d454e830e3494f80078c5a434af1e017f49e54ce5fc4214591f
-// 
-//const endpointSecret = `${process.env.SECRET_SIGNATURE}`;
+
 const endpointSecret = process.env.SECRET_SIGNATURE;
 console.log('Entrando em Webhook!');
 
-//const endpointSecret = "whsec_dd0f50c30b5c9d454e830e3494f80078c5a434af1e017f49e54ce5fc4214591f";
+let checkoutData;
 router.post('/webhook', express.raw({type: 'application/json'}), (request, response) => {
   const sig = request.headers['stripe-signature'];
+  console.log("SIG ", sig) 
 
   let event, data, eventType;
     console.log('Passou por Webhook!');
@@ -105,32 +103,45 @@ router.post('/webhook', express.raw({type: 'application/json'}), (request, respo
 }
 
   // Handle the event
-if(eventType === "checkout.session.completed") {
-    stripe.customers.retrieve(data.customer)
-        .then((customer) => {
-            console.log(customer.metadata.cart)
+    if(eventType === "checkout.session.completed") {
+        stripe.customers.retrieve(data.customer)
+            .then((customer) => {
 
-            // Send data to frontend
-            const dataFromWebhook = [{
-                customerId: customer.id,    
-                cart: JSON.parse(customer.metadata.cart),
-                amount_subtotal: data.amount_subtotal,
-                amount_total: data.amount_total,
-                total_details: data.total_details,
-                customer_details: data.customer_details
-            }];
-            
-            router.post("/checkout-success" , (req, res) => {
-                res.status(200).json(dataFromWebhook);
-            })
-            
-        }
-    ).catch(err => console.log(err.message));
-}
+                const id = customer.id;
+                const cart = JSON.parse(customer.metadata.cart);
+                
+                checkoutData = [{
+                    id,    
+                    cart,
+                    amount_subtotal: data.amount_subtotal,
+                    amount_total: data.amount_total,
+                    total_details: data.total_details,
+                    customer_details: data.customer_details
+                }];
+                
+            }
+        ).catch(err => console.log(err.message));
+    }
+    else {
+        response.status(200).send("Event not handled");
+    }   
+
 
   // Return a 200 response to acknowledge receipt of the event
-  response.send().end();
+  response.status(200).end()
 });
+
+
+router.get('/checkout-success', async (req, res) => {
+    try {
+        // Return a 200 response to acknowledge receipt of the event and send webhook data to frontend
+        res.status(200).json(checkoutData);
+    } catch (error) {
+        console.error('Erro ao obter os dados do último checkout: ', error);
+        res.status(500).send('Erro ao obter os dados do último checkout');
+    }
+});
+
 
 export default router
 
