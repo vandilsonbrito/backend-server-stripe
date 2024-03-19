@@ -83,8 +83,7 @@ console.log('Entrando em Webhook!');
 
 let checkoutData;
 router.post('/webhook', express.raw({type: 'application/json'}), (request, response) => {
-  const sig = request.headers['stripe-signature'];
-  console.log("SIG ", sig) 
+  const sig = request.headers['stripe-signature'];  
 
   let event, data, eventType;
     console.log('Passou por Webhook!');
@@ -118,7 +117,7 @@ router.post('/webhook', express.raw({type: 'application/json'}), (request, respo
                     total_details: data.total_details,
                     customer_details: data.customer_details
                 }];
-                
+         
             }
         ).catch(err => console.log(err.message));
     }
@@ -126,16 +125,16 @@ router.post('/webhook', express.raw({type: 'application/json'}), (request, respo
         response.status(200).send("Event not handled");
     }   
 
-
-  // Return a 200 response to acknowledge receipt of the event
-  response.status(200).end()
+    console.log("Finalizando Webhook")
+    // Return a 200 response to acknowledge receipt of the event
+    response.status(200).end()
 });
-
 
 router.get('/checkout-success', async (req, res) => {
     try {
         // Return a 200 response to acknowledge receipt of the event and send webhook data to frontend
         res.status(200).json(checkoutData);
+        console.log(checkoutData)
     } catch (error) {
         console.error('Erro ao obter os dados do último checkout: ', error);
         res.status(500).send('Erro ao obter os dados do último checkout');
